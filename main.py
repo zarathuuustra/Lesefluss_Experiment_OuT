@@ -1,58 +1,85 @@
 from tkinter import *
+import os
+from PIL import Image
+script_dir = os.path.dirname(__file__)
+pic_dir = os.path.join(script_dir, "BILDER_EXPERIMENT", "Bild_0_neu.png")
+print(pic_dir)
 
 fenster = Tk()
 fenster.title("Experiment TEXT UND KOHAERENZ")
 fenster.geometry('1000x750')
-INFO_LIST = []
-
+user_info = {"Name": "", "Gruppe":0}
 # Spalten gleichmäßig verteilen (von 0 bis 5 z. B.)
 for i in range(6):
     fenster.grid_columnconfigure(i, weight=1)
 
 def clicked():
-    res = f"Vielen Dank {txt.get()}!"
-    ergebnis_label.configure(text=res)
+    res = i_txt.get()
+    user_info["Name"] = res
+    i_name_label.configure(text=f"Vielen Dank fürs Mitmachen {res}!")
+    print(user_info)
 
 def clicked_1():
     text_1 = "Okay, du bist Gruppe 1!"
-    button_1.configure(text=text_1)
-    INFO_LIST.append("GRUPPE1")
-    # print(interessante_liste)
-    button_2.grid_forget()
+    i_button_1.configure(text=text_1)
+    user_info["Gruppe"] = 1
+    i_button_2.grid_forget()
+    print(user_info)
 
 def clicked_2():
     text_2 = "Okay, du bist Gruppe 2!"
-    button_2.configure(text=text_2)
+    i_button_2.configure(text=text_2)
+    user_info["Gruppe"] = 1
+    i_button_1.grid_forget()
+    print(user_info)
 
-# Hinweis: Alle zentral in Spalte 2 oder 3 setzen
-info_label = Label(fenster, text="Hallo! Willkommen zum Experiment! \n"
+def clicked_bereit():
+    if user_info["Gruppe"] == 0:
+        i_status_label.configure(text="Bitte trage deine Gruppe ein!")
+    elif user_info["Name"] == "":
+        i_status_label.configure(text="Bitte trage deinen Namen noch ein!")
+    else:
+        i_status_label.configure(text="Super, dann geht es jetzt los!")
+
+def experiment():
+    """
+    Wenn das Experiment startet, mache folgendes:
+    1. Vergesse die vorherigen Buttons und Labels
+    2. Zeige die neuen Buttons und Labels passend zur Gruppe an.
+    :return:
+    """
+    i_hallo_label.grid_forget()
+    # i_name_label, i_txt, i_btn, i_info_label_2, i_button_1, i_button_2, i_status_label, i_button_bereit
+
+#
+i_hallo_label = Label(fenster, text="Hallo! Willkommen zum Experiment! \n"
                                  "Hier wirst du Comic-Bilder in einer bestimmten Reihenfolge sehen und interpretieren.")
-info_label.grid(column=2, row=0, pady=10)
+i_hallo_label.grid(column=1, row=0, pady=10)
 
 # Informationsgruppe 1
-info_label_2 = Label(fenster, text="Bitte trage deine Namen ein.")
-info_label_2.grid(column=1, row=1)
-txt = Entry(fenster, width=20)
-txt.grid(column=1, row=2)
-btn = Button(fenster, text="Bestätigen!", fg="red", command=clicked)
-btn.grid(column=1, row=3, pady=5)
-ergebnis_label = Label(fenster, text="Hier steht später dein Name...")
-ergebnis_label.grid(column=1, row=4, pady=10)
-
-#Infoabfrage
-info_label_abfrage = Label(fenster, text="Wenn du Name und Gruppe eingetragen hast kann das Experiment beginnen.\n"
-                                   "Bist du bereit?")
-info_label_abfrage.grid(column=2, row=1)
+i_name_label = Label(fenster, text="Bitte trage deine Namen ein.")
+i_name_label.grid(column=1, row=1)
+i_txt = Entry(fenster, width=20)
+i_txt.grid(column=1, row=2)
+i_btn = Button(fenster, text="Bestätigen!", fg="red", command=clicked)
+i_btn.grid(column=1, row=3, pady=5)
 
 # Informationsgruppe 2
-info_label_2 = Label(fenster, text="Und sag uns bitte in welcher Gruppe du bist.")
-info_label_2.grid(column=3, row=1)
-button_1 = Button(fenster, text="Gruppe 1", command=clicked_1)
-button_1.grid(column=3, row=2, pady=5)
-button_2 = Button(fenster, text="Gruppe 2", command=clicked_2)
-button_2.grid(column=3, row=3, pady=5)
+i_info_label_2 = Label(fenster, text="Und sag uns bitte in welcher Gruppe du bist.")
+i_info_label_2.grid(column=2, row=0)
+i_button_1 = Button(fenster, text="Gruppe 1", command=clicked_1)
+i_button_1.grid(column=2, row=1, pady=5)
+i_button_2 = Button(fenster, text="Gruppe 2", command=clicked_2)
+i_button_2.grid(column=2, row=2, pady=5)
 
+i_status_label = Label(fenster, text="Wenn du Name und Gruppe eingegeben hast,\ndann drücke auf den Button 'BEREIT'.")
+i_status_label.grid(column=2, row=4)
+i_button_bereit = Button(fenster, text="BEREIT", command=clicked_bereit)
+i_button_bereit.grid(column=2, row=5, pady=5)
+
+exit_label = Label(fenster, text="Wenn du das Experiment beenden möchtest,\ndann drücke auf den Knopf 'Beenden'.")
+exit_label.grid(column=3, row=0)
 exit_button = Button(fenster, text="Beenden", command=fenster.quit)
-exit_button.grid(column=2, row=7, pady=10)
+exit_button.grid(column=3, row=1, pady=10)
 
 fenster.mainloop()
