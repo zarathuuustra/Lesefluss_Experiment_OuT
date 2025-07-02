@@ -15,7 +15,7 @@ fenster = Tk()
 fenster.title("Experiment TEXT UND KOHAERENZ")
 fenster.geometry('1000x750')
 user_info = {"Name": "", "Gruppe":0}
-
+bilder_cache = {}
 collected_data = {
     "Bild1": "",
     "Bild2": "",
@@ -45,7 +45,7 @@ def clicked_1():
 def clicked_2():
     text_2 = "Okay, du bist Gruppe 2!"
     i_button_2.configure(text=text_2)
-    user_info["Gruppe"] = 1
+    user_info["Gruppe"] = 2
     i_button_1.grid_forget()
     print(user_info)
 
@@ -57,27 +57,6 @@ def clicked_bereit():
     else:
         i_status_label.configure(text="Super, dann geht es jetzt los!")
         experiment()
-
-def experiment():
-    """
-    Wenn das Experiment startet, mache folgendes:
-    1. Vergesse die vorherigen Buttons und Labels
-    2. Zeige die neuen Buttons und Labels passend zur Gruppe an.
-    :return:
-    """
-    i_hallo_label.grid_forget()
-    i_name_label.grid_forget()
-    i_txt.grid_forget()
-    i_btn.grid_forget()
-    intro_gruppen_label.grid_forget()
-    i_button_1.grid_forget()
-    i_button_2.grid_forget()
-    i_status_label.grid_forget()
-    i_button_bereit.grid_forget()
-    if user_info["Gruppe"] == 1:
-        pass
-    else:
-        pass
 
 # Informationen_ANFANG_SALVE
 i_hallo_label = Label(fenster, text="Hallo! Willkommen zum Experiment! \n"
@@ -113,5 +92,32 @@ exit_button = Button(fenster, text="Beenden", command=fenster.quit)
 exit_button.grid(column=3, row=1, pady=10)
 
 # Reihenfolge Standard: 1-6; Reihenfolge anders: 6-1
+
+def experiment():
+    """
+    Wenn das Experiment startet, mache folgendes:
+    1. Vergesse die vorherigen Buttons und Labels
+    2. Zeige die neuen Buttons und Labels passend zur Gruppe an.
+    :return:
+    """
+    i_hallo_label.grid_forget()
+    i_name_label.grid_forget()
+    i_txt.grid_forget()
+    i_btn.grid_forget()
+    intro_gruppen_label.grid_forget()
+    i_button_1.grid_forget()
+    i_button_2.grid_forget()
+    i_status_label.grid_forget()
+    i_button_bereit.grid_forget()
+    if user_info["Gruppe"] == 1:
+        gruppe1()
+    else:
+        pass
+
+def gruppe1():
+    print("Gruppe_1_Test")
+    bilder_cache["bild1"] = PhotoImage(file=pic1_dir)
+    bild_label = Label(fenster, image=bilder_cache["bild1"])
+    bild_label.grid(column=2, row=1)
 
 fenster.mainloop()
